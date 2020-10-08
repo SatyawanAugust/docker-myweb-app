@@ -13,7 +13,7 @@ services:
     networks:
       - int_net
   pma:
-    image: phpmyadmin/phpmyadmin:5
+    image: phpmyadmin:5
     links:
       - mysql:db
     depends_on: 
