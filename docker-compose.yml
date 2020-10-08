@@ -1,0 +1,46 @@
+version: '3.1'
+
+services: 
+  mysql: 
+    image: mysql:5.7
+    environment: 
+      MYSQL_ROOT_PASSWORD: password 
+      MYSQL_DATABASE: dbkuasai
+      MYSQL_USER: cilsykuasaiuser
+      MYSQL_PASSWORD: cilsykuasaipassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - int_net
+  pma:
+    image: phpmyadmin/phpmyadmin:4.8.5
+    links:
+      - mysql:db
+    networks:
+      - proxy_net
+      - int_net
+  web:
+    build:
+      context: .
+      dockerfile: web.Dockerfile
+      #image: httpd
+      #volumes:
+        #- myweb-app/file-web:/usr/local/apache2/htdocs/
+    networks: 
+      - proxy_net
+      - int_net
+  proxy:
+    build: 
+      context: .
+      dockerfile: nginx.Dockerfile
+    ports: 
+      - '80:80'
+    networks:
+      - ext_net
+      - proxy_net
+volumes:
+  mysql-data:
+networks:
+  int_net:
+  proxy_net:
+  ext_net:
