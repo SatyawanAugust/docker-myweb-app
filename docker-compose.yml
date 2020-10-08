@@ -33,7 +33,7 @@ services:
     #build: 
       #context: .
       #dockerfile: nginx.Dockerfile
-    image: satyawan/pma-custom
+    image: satyawan/proxy-custom
     ports: 
       - '80:80'
     networks:
