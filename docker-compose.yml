@@ -2,7 +2,7 @@ version: '3.1'
 
 services: 
   mysql: 
-    image: mysql:5.7
+    image: satyawan/mysql-custom
     environment: 
       MYSQL_ROOT_PASSWORD: eyMgezuZYC4NL7XS 
       MYSQL_DATABASE: dbkuasai
@@ -13,27 +13,29 @@ services:
     networks:
       - int_net
   pma:
-    image: phpmyadmin/phpmyadmin:4.8.5
+    image: satyawan/pma-custom
     links:
       - mysql:db
     networks:
       - proxy_net
       - int_net
   web:
-    build:
-      context: .
-      dockerfile: web.Dockerfile
-      #image: httpd
-      #volumes:
-        #- myweb-app/file-web:/usr/local/apache2/htdocs/
+    #build:
+      #context: .
+      #dockerfile: web.Dockerfile
+    image: satyawan/web-custom 
+    volumes:
+      - ./file-web:/var/www/html/
+        #- ./file-web:/usr/local/apache2/htdocs/
     networks: 
       - proxy_net
       - int_net
   proxy:
-    build: 
-      context: .
-      dockerfile: nginx.Dockerfile
-    ports: 
+    #build: 
+      #context: .
+      #dockerfile: nginx.Dockerfile
+    image: satyawan/pma-custom
+      ports: 
       - '80:80'
     networks:
       - ext_net
