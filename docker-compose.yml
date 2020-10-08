@@ -26,7 +26,6 @@ services:
     image: satyawan/web-custom 
     volumes:
       - ./file-web:/var/www/html/
-        #- ./file-web:/usr/local/apache2/htdocs/
     networks: 
       - proxy_net
       - int_net
