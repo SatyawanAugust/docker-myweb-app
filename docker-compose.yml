@@ -13,18 +13,11 @@ services:
       - mysql-data:/var/lib/mysql
     networks:
       - int_net
-
   pma:
     image: phpmyadmin:5
-    links:
-      - mysql:db
-    depends_on: 
-      - mysql 
-    restart: always
     networks:
       - proxy_net
       - int_net
-
   web:
     build:
       context: .
@@ -38,13 +31,11 @@ services:
     networks: 
       - proxy_net
       - int_net
-
   proxy:
     build: 
       context: .
       dockerfile: nginx.Dockerfile
     #image: satyawan/proxy-custom
-    restart: always
     ports: 
       - '80:80'
     networks:
