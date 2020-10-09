@@ -2,10 +2,7 @@ version: '3.1'
 
 services: 
   mysql: 
-    build:
-      context: mysql/.
-      dockerfile: Dockerfile
-    #image: mysql:5.7
+    image: mysql:5.7
     environment: 
       MYSQL_ROOT_PASSWORD: eyMgezuZYC4NL7XS 
       MYSQL_DATABASE: dbkuasai
@@ -18,10 +15,7 @@ services:
       - int_net
 
   pma:
-    build:
-      context: pma/.
-      dockerfile: Dockerfile
-    #image: phpmyadmin:5
+    image: phpmyadmin:5
     links:
       - mysql:db
     depends_on: 
