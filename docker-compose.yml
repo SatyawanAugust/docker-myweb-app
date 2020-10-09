@@ -15,6 +15,7 @@ services:
       - int_net
   pma:
     image: phpmyadmin:5
+    links: mysql:db
     networks:
       - proxy_net
       - int_net
