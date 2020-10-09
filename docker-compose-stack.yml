@@ -2,10 +2,7 @@ version: '3.1'
 
 services: 
   mysql: 
-    build:
-      context: mysql/.
-      dockerfile: Dockerfile
-    #image: mysql:5.7
+    image: satyawan/mysql-custom:5.7
     environment: 
       MYSQL_ROOT_PASSWORD: eyMgezuZYC4NL7XS 
       MYSQL_DATABASE: dbkuasai
@@ -18,27 +15,19 @@ services:
       - int_net
 
   pma:
-    build:
-      context: pma/.
-      dockerfile: Dockerfile
-    #image: phpmyadmin:5
+    image: satyawan/pma-custom:1.0
     links:
       - mysql:db
     depends_on: 
       - mysql 
-    restart: always
     networks:
       - proxy_net
       - int_net
 
   web:
-    build:
-      context: .
-      dockerfile: web.Dockerfile
-    #image: satyawan/web-custom
+    image: satyawan/web-custom:1.0
     depends_on: 
       - mysql 
-    restart: always
     volumes:
       - ./file-web:/var/www/html/
     networks: 
@@ -46,11 +35,7 @@ services:
       - int_net
 
   proxy:
-    build: 
-      context: .
-      dockerfile: nginx.Dockerfile
-    #image: satyawan/proxy-custom
-    restart: always
+    image: satyawan/proxy-custom:1.0
     ports: 
       - '80:80'
     networks:
@@ -59,6 +44,9 @@ services:
 
 volumes:
   mysql-data:
+    driver: rexray/dobs
+    driver_opts: 
+      size: 2
 
 networks:
   int_net:
