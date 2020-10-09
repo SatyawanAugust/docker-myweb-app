@@ -70,7 +70,7 @@ services:
         condition: on-failure
 volumes:
   mysql-data:
-    driver: rexray/dobs
+    driver: rexray/gcepd
     driver_opts: 
       size: 2
 networks:
