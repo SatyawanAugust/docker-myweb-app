@@ -76,7 +76,6 @@ services:
 volumes:
   mysql-data:
     driver: rexray/gcepd
-    external: true 
     driver_opts: 
       size: 2
 networks:
