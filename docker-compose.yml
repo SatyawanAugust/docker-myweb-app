@@ -25,6 +25,8 @@ services:
       context: .
       dockerfile: web.Dockerfile
     #image: satyawan/web-custom
+    links: 
+      - mysql:db
     depends_on: 
       - mysql 
     restart: always
