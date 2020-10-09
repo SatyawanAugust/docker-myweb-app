@@ -38,6 +38,8 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
+        delay: 5s
+        max_attempts: 3
   web:
     image: satyawan/web-custom:1.0
     depends_on: 
@@ -58,6 +60,9 @@ services:
     image: satyawan/proxy-custom:1.0
     ports: 
       - '80:80'
+    depends_on: 
+      - web
+      - pma
     networks:
       - ext_net
       - proxy_net
@@ -71,6 +76,7 @@ services:
 volumes:
   mysql-data:
     driver: rexray/gcepd
+    external: true 
     driver_opts: 
       size: 2
 networks:
