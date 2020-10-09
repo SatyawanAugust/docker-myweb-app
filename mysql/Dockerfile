@@ -4,7 +4,7 @@ FROM mysql:5.7
 LABEL maintainer="wawan.cukb@gmail.com"
 
 # update & install dependencies
-RUN apt-get update && apt-get install ping -y
+RUN apt-get update && apt-get install iputils-ping -y
 RUN apt-get clean && apt-get autoremove -y
 
 # copy docker-healthcheck mysql
