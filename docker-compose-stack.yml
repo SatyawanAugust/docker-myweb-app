@@ -75,9 +75,9 @@ services:
         condition: on-failure
 volumes:
   mysql-data:
-    driver: rexray/gcepd
-    driver_opts: 
-      size: 2
+    #driver: rexray/gcepd
+    #driver_opts: 
+      #size: 2
 networks:
   int_net:
   proxy_net:
