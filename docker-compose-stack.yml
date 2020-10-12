@@ -6,11 +6,12 @@ services:
     secrets:
       - mysql_user
       - mysql_pass
+      - mysql_root_pass
     environment: 
-      MYSQL_ROOT_PASSWORD: eyMgezuZYC4NL7XS 
+      MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_pass 
       MYSQL_DATABASE: dbkuasai
       MYSQL_USER: /run/secrets/mysql_user
-      MYSQL_PASSWORD: /run/secrets/mysql_password
+      MYSQL_PASSWORD: /run/secrets/mysql_pass
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
@@ -38,14 +39,12 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
-        delay: 5s
-        max_attempts: 3
   web:
     image: satyawan/web-custom:1.0
     depends_on: 
       - mysql 
     volumes:
-      - ./file-web:/var/www/html/
+      - ./file-web/:/var/www/html/
     networks: 
       - proxy_net
       - int_net
@@ -75,15 +74,20 @@ services:
         condition: on-failure
 volumes:
   mysql-data:
-    #driver: rexray/gcepd
+    #driver: rexray/dobs
     #driver_opts: 
       #size: 2
 networks:
   int_net:
+    driver: overlay
   proxy_net:
+    driver: overlay
   ext_net:
+    driver: overlay
 secrets:
   mysql_user:
-    file: ./mysql_user.txt
+    file: mysql_user.txt
   mysql_pass:
+    external: true
+  mysql_root_pass:
     external: true
