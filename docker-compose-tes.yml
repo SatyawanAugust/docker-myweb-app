@@ -1,0 +1,82 @@
+version: '3.1'
+
+services: 
+  mysql: 
+    image: satyawan/mysql-custom:1.0
+    environment: 
+        MYSQL_ROOT_PASSWORD: eyMgezuZYC4NL7XS 
+        MYSQL_DATABASE: dbkuasai
+        MYSQL_USER: cilsykuasaiuser
+        MYSQL_PASSWORD: cilsykuasaipassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - int_net
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+  pma:
+    image: satyawan/pma-custom:1.0
+    depends_on: 
+      - mysql 
+    networks:
+      - proxy_net
+      - int_net
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+  web:
+    image: satyawan/web-custom:1.0
+    depends_on: 
+      - mysql 
+    volumes:
+      - ./file-web/:/var/www/html/
+    networks: 
+      - proxy_net
+      - int_net
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+  proxy:
+    image: satyawan/proxy-custom:1.0
+    ports: 
+      - '80:80'
+    depends_on: 
+      - web
+      - pma
+    networks:
+      - ext_net
+      - proxy_net
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+volumes:
+  mysql-data:
+    #driver: rexray/dobs
+    #driver_opts: 
+      #size: 2
+networks:
+  int_net:
+    driver: overlay
+  proxy_net:
+    driver: overlay
+  ext_net:
+    driver: overlay
