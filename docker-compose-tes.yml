@@ -24,7 +24,9 @@ services:
   pma:
     image: satyawan/pma-custom:1.0
     depends_on: 
-      - mysql 
+      - mysql
+    environment: 
+      PMA_HOST: mysql 
     networks:
       - proxy_net
       - int_net
@@ -70,9 +72,7 @@ services:
         condition: on-failure
 volumes:
   mysql-data:
-    #driver: rexray/dobs
-    #driver_opts: 
-      #size: 2
+    
 networks:
   int_net:
     driver: overlay
